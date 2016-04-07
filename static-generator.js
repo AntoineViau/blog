@@ -102,9 +102,16 @@ var fse = require('fs-extra');
     });
 
     //copy css and js
-    fs.mkdirSync(buildDirectory + '/css');
-    fse.copySync(layoutsDirectory + '/css', buildDirectory + '/css');
-    fs.mkdirSync(buildDirectory + '/js');
-    fse.copySync(layoutsDirectory + '/js', buildDirectory + '/js');
+    var folders = ['css', 'js', 'img'];
+    folders.forEach(function(folder) {
+      fs.mkdirSync(buildDirectory + '/' + folder);
+      fse.copySync(layoutsDirectory + '/' + folder, buildDirectory + '/' + folder);
+    });
+    // fs.mkdirSync(buildDirectory + '/css');
+    // fse.copySync(layoutsDirectory + '/css', buildDirectory + '/css');
+    // fs.mkdirSync(buildDirectory + '/js');
+    // fse.copySync(layoutsDirectory + '/js', buildDirectory + '/js');
+    // fs.mkdirSync(buildDirectory + '/img');
+    // fse.copySync(layoutsDirectory + '/img', buildDirectory + '/img');
   };
 });

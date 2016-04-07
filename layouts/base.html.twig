@@ -2,14 +2,15 @@
 <html>
     <head>
         {% block head %}
-            <link rel="stylesheet" href="css/normalize.css" />
+            <link rel="stylesheet" href="css/global.css" />
+            <link rel="stylesheet" href="css/custom.css" />
             <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
             <title>Antoine Viau - {% block title %}{% endblock %}</title>
         {% endblock %}
     </head>
     <body>
         
-        <nav class="wrapper ">
+        <nav class="wrapper"> 
             <a href="#" onclick="return false;"><i class="fa fa-align-justify fa-lg"></i></a>
             <ul>
                 <li><a href="/about">About</a></li>
@@ -18,9 +19,16 @@
             </ul>
         </nav>
 
-        <aside>
-            {% include 'menu.html.twig' %}
-        </aside>
+        <div class="profile">
+            <img src="img/arobase.png" class="profileimage" alt="user" />
+            <h4>antoineviau.com</h4>
+            <p>Yo ! Suis Antoine Viau</p>
+            <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
+            <p>Need help with your AngularJS project?<br><a href="hire-me">Hire me</a>.</p>
+            <hr>
+            <a href="https://twitter.com/jvandemo" class="twitter-follow-button" data-show-count="false" data-lang="en" data-size="large">Follow @jvandemo</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
 
         <div id="content">
             {% block content %}
