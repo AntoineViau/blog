@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <link rel="stylesheet" href="css/normalize.css" />
+            <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+            <title>Antoine Viau - {% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        
+        <nav class="wrapper ">
+            <a href="#" onclick="return false;"><i class="fa fa-align-justify fa-lg"></i></a>
+            <ul>
+                <li><a href="/about">About</a></li>
+                <li><a href="/tools">Tools</a></li>
+                <li><a href="/hire-me">Hire me</a></li>
+            </ul>
+        </nav>
+
+        <aside>
+            {% include 'menu.html.twig' %}
+        </aside>
+
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div id="footer">
+            {% block footer %}
+                &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>.
+            {% endblock %}
+        </div>
+
+    </body>
+</html>
+
