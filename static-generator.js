@@ -2,7 +2,7 @@
  var fm = require('front-matter');
  var fs = require('fs');
  var md = require('markdown').markdown;
- var twig = require('twig').twig;
+ var Twig = require('./node_modules/twig/twig.js');
  var path = require('path');
  var ext = require('file-extension');
  var fse = require('fs-extra');
@@ -86,24 +86,19 @@
 
      // templating
      processDirectory(tree, false, function(node) {
+       Twig.cache(false);
+       var twig = Twig.twig;
        var layout = (node.fm && node.fm.attributes.layout ? node.fm.attributes.layout : 'post');
-       console.log('doing ' + node.name + ' with layout ' + layout);
-       // node.templated = twig({
-       //     path: layoutsDirectory + '/' + layout + '.html.twig',
-       //     async: false
-       //   })
-       //   .render({
-       //     'nodes': tree,
-       //     'categories': categories,
-       //     'posts': posts,
-       //     'body': node.html
-       //   });
-       node.templated = hb.compile(fs.readFileSync(layoutsDirectory + '/' + layout + '.html.twig').toString())({
-         'nodes': tree,
-         'categories': categories,
-         'posts': posts,
-         'body': node.html
-       });
+       node.templated = twig({
+           path: layoutsDirectory + '/' + layout + '.html.twig',
+           async: false
+         })
+         .render({
+           'nodes': tree,
+           'categories': categories,
+           'posts': posts,
+           'body': node.html
+         });
      });
 
      // create directories in build

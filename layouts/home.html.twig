@@ -1,7 +1,11 @@
-{{# partial "content" }}
+{% extends "base.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
 
     <h1>HOME</h1>
-    
-{{/partial}}
 
-{{> base}}
+    {{body}}
+
+{% endblock %}
