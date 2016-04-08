@@ -1,9 +1,9 @@
 <ul>
-{% for node in tree.children %}
-    
-    {% if node.categoryName is defined %}
-        <li><a href="http://{{node.path}}">{{node.categoryName}}</a></li>
-    {% endif %}
+{% for category in categories %}
+
+    <li>
+        {{category.name}}
+    </li>    
     
 {% endfor %}    
 </ul>

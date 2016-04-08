@@ -351,7 +351,7 @@ input:not([type=submit]):not([type=file]):active, input:not([type=submit]):not([
     display: inline-block;
     width: auto
 }
-
+ 
 @media screen and (max-width: 906px) {
     .title a {
         left: 5%;
@@ -363,7 +363,7 @@ input:not([type=submit]):not([type=file]):active, input:not([type=submit]):not([
 }
 
 .wrapper {
-    width: 90%;
+    width: 50%;
     max-width: 760px;
     margin: 0 auto
 }

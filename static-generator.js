@@ -6,6 +6,7 @@
  var path = require('path');
  var ext = require('file-extension');
  var fse = require('fs-extra');
+ var hb = require('handlebars');
 
  // IIFE qui sera donc appelée dès l'inclusion.
  // Elle s'occupe de choisir la stratégie adaptée au contexte : node, web/amd, etc.
@@ -57,7 +58,7 @@
 
      // Read front-matter
      processDirectory(tree, false, function(node) {
-       if (node.ext == 'md') {
+       if (node.ext == 'md' ||  node.ext == 'html' ) {
          var content = fs.readFileSync(postsDirectory + '/' + node.path).toString();
          node.fm = fm(content);
          if (node.fm.attributes.layout) {
@@ -78,20 +79,31 @@
          var htmlContent = node.fm.body;
          node.html = md.toHTML(htmlContent);
        }
+       if (ext(node.name) == 'html') {
+         node.html = fs.readFileSync(postsDirectory + '/' + node.path).toString();
+       }
      });
 
      // templating
      processDirectory(tree, false, function(node) {
-       node.templated = twig({
-           path: layoutsDirectory + '/' + (node.fm && node.fm.attributes.layout ? node.fm.attributes.layout : 'post') + '.html.twig',
-           async: false
-         })
-         .render({
-           'nodes': tree,
-           'categories': categories,
-           'posts': posts,
-           'body': node.html
-         });
+       var layout = (node.fm && node.fm.attributes.layout ? node.fm.attributes.layout : 'post');
+       console.log('doing ' + node.name + ' with layout ' + layout);
+       // node.templated = twig({
+       //     path: layoutsDirectory + '/' + layout + '.html.twig',
+       //     async: false
+       //   })
+       //   .render({
+       //     'nodes': tree,
+       //     'categories': categories,
+       //     'posts': posts,
+       //     'body': node.html
+       //   });
+       node.templated = hb.compile(fs.readFileSync(layoutsDirectory + '/' + layout + '.html.twig').toString())({
+         'nodes': tree,
+         'categories': categories,
+         'posts': posts,
+         'body': node.html
+       });
      });
 
      // create directories in build
