@@ -1,14 +1,19 @@
 var gulp = require('gulp');
-var watch = require('gulp-watch');
-var liveReload = require('gulp-livereload');
+var bs = require('browser-sync');
 var sg = require('./static-generator');
 var del = require('del');
-sequence = require('gulp-sequence');
+var sequence = require('gulp-sequence');
 
-gulp.task('liveReload', function() {
-    return gulp.src(['build/**/*'])
-        .pipe(liveReload());
+gulp.task('serve', function() {
+    bs.init({
+        notify: false,
+        server: {
+            baseDir: "./build"
+        }
+    });
 });
+
+gulp.task('reload', bs.reload);
 
 gulp.task('clean', function(cb) {
     return del(['./build/**/*'], cb);
@@ -20,12 +25,12 @@ gulp.task('build', function(cb) {
 });
 
 gulp.task('build-dev', function(cb) {
-    return sequence('clean', 'build', 'liveReload')(cb);
+    return sequence('clean', 'build', 'reload')(cb);
 });
 
 gulp.task('dev', function(cb) {
-    liveReload.listen();
-    watch(['./posts/**/*', './layouts/**/*'], {}, function() {
+    gulp.start('serve');
+    gulp.watch(['./posts/**/*', './layouts/**/*'], {}, function() {
         gulp.start('build-dev');
     });
 });

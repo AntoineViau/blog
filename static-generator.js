@@ -6,7 +6,6 @@
  var path = require('path');
  var ext = require('file-extension');
  var fse = require('fs-extra');
- var hb = require('handlebars');
 
  // IIFE qui sera donc appelée dès l'inclusion.
  // Elle s'occupe de choisir la stratégie adaptée au contexte : node, web/amd, etc.
