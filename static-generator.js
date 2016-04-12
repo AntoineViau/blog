@@ -2,10 +2,11 @@
  var fm = require('front-matter');
  var fs = require('fs');
  var md = require('markdown').markdown;
- var Twig = require('./node_modules/twig/twig.js');
+ var Twig = require('twig');
  var path = require('path');
  var ext = require('file-extension');
  var fse = require('fs-extra');
+ var _ = require('lodash');
 
  // IIFE qui sera donc appelée dès l'inclusion.
  // Elle s'occupe de choisir la stratégie adaptée au contexte : node, web/amd, etc.
@@ -47,11 +48,18 @@
          var subDirs = node.path.split('/');
          node.categoryName = subDirs[subDirs.length - 1].substr(4);
          node.buildDirectory = buildDirectory + '/' + node.path;
-         categories.push(node);
-       } else {
-         node.dirname = path.dirname(node.path);
-         node.buildDirectory = buildDirectory + '/' + node.dirname;
-         node.ext = ext(node.name);
+         // If the node has child directory, it's a category
+         if (_.find(node.children, function(child) {
+             return child.type == 'directory';
+           })) {
+           node.categoryLevel = subDirs.length;
+           categories.push(node);
+         } else {
+           node.dirname = path.dirname(node.path);
+           node.buildDirectory = buildDirectory + '/' + node.dirname;
+           node.ext = ext(node.name);
+           posts.push(node);
+         }
        }
      });
 
@@ -72,7 +80,7 @@
        }
      });
 
-     // convert markdown to html
+     // Convert markdown to html
      processDirectory(tree, false, function(node) {
        if (ext(node.name) == 'md') {
          var htmlContent = node.fm.body;
@@ -83,7 +91,7 @@
        }
      });
 
-     // templating
+     // Templating
      processDirectory(tree, false, function(node) {
        Twig.cache(false);
        var twig = Twig.twig;
@@ -100,7 +108,7 @@
          });
      });
 
-     // create directories in build
+     // Create directories in build
      processDirectory(tree, true, function(node) {
        if (node.type == 'directory') {
          if (!fs.existsSync(node.buildDirectory)) {
@@ -109,19 +117,19 @@
        }
      });
 
-     // copy posts
+     // Copy posts
      processDirectory(tree, false, function(node) {
        fs.writeFileSync(node.buildDirectory + '/index.html', node.templated);
      });
 
-     //copy assets
+     // Copy assets
      processDirectory(tree, false, function(node) {
        if (ext(node.name) != 'md') {
          fse.copySync(postsDirectory + '/' + node.path, node.buildDirectory + '/' + node.name);
        }
      });
 
-     //copy css and js
+     // Copy css and js
      var folders = ['css', 'js', 'img'];
      folders.forEach(function(folder) {
        fs.mkdirSync(buildDirectory + '/' + folder);

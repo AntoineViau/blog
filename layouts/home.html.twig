@@ -4,7 +4,16 @@
 
 {% block content %}
 
-    <h1>HOME Antoinedeeeee</h1>
+    <h1>HOMEa</h1>
+
+    <ul>
+    {% for category in categories %}
+        <li>
+        {{category.name}}, {{category.categoryLevel}}<br />  
+    </li>
+
+    {% endfor %}
+</ul>
 
     {{body}}
 
